@@ -9,10 +9,14 @@ class Node:
         self.col = col  # Column position of node
         self.x = row * width  # X position of node
         self.y = col * width  # Y position of node
-        self.state = "empty"  # Stores what state the node is currently in
         self.neighbors = []  # List of neighbor nodes
         self.width = width  # Width of node
         self.total_rows = total_rows  # Total rows in grid
+        self.state = "empty"  # Stores what state the node is currently in
+        """
+        Possible node states:
+        empty, start, end, barrier, open, closed, path
+        """
 
     # Check the state of the node
     def get_node_state(self):

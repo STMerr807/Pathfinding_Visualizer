@@ -91,13 +91,13 @@ def main(win, width):
                 row, col = get_clicked_pos(pos, rows, width)  # Get node clicked on
                 if 0 <= row < rows and 0 <= col < rows:
                     node = grid[row][col]  # Index the node
-                    if not start and node.get_node_state() != end:
+                    if not start and node.get_node_state() != 'end':  # If start node not set and node is not end node
                         start = node  # Set start node
                         start.set_node_state('start')  # Make start node
-                    elif not end and node.get_node_state() != start:
+                    elif not end and node.get_node_state() != 'start':  # If end node not set and node is not start node
                         end = node  # Set end node
                         end.set_node_state('end')  # Make end node
-                    elif node.get_node_state != end and node.get_node_state != start:
+                    elif node.get_node_state() != 'end' and node.get_node_state() != 'start':  # If node is not start or end
                         node.set_node_state('barrier')  # Make barrier node
                 else:
                     continue
