@@ -126,13 +126,13 @@ def main(w_size=WIN, w_width=WIDTH, tile_size=TILE_SIZE):
                     To visualize the algorithm, comment out the following three lines
                     and uncomment the three lines after them
                     """
-                    visited = pathfinding.algorithm(grid, start, end)  # Run algorithm
-                    skip_num = 100  # Number of nodes to skip
+                    visited = pathfinding.algorithm(grid, start, end, 1, 'chebyshev')  # Run algorithm
+                    skip_num = 100  # Number of nodes to skip (higher is faster)
                     for i, node in enumerate(visited):
                         if i % skip_num == 0:  # Draw display window every N nodes
                             draw(w_size, grid, total_rows, w_width)  # Draw display window
 
-                    # for node in algorithm(grid, start, end):  # Iterate over nodes from algorithm
+                    # for node in algorithm(grid, start, end, 1, 'chebyshev'):  # Iterate over nodes from algorithm
                     #     draw(win, grid, rows, width)  # Draw display window
                     #     pygame.time.delay(5)  # Delay to control visualization speed
 
