@@ -1,3 +1,4 @@
+import heapq
 from queue import PriorityQueue
 from enum import Enum
 
@@ -58,11 +59,13 @@ class Node:
         return False
 
 
-# Heuristic function using Manhattan distance
+# Heuristic function using chosen distance metric
 def heuristic(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
-    return abs(x1 - x2) + abs(y1 - y2)
+    return max(abs(x1 - x2), abs(y1 - y2))  # Return Chebyshev distance
+    # return abs(x1 - x2) + abs(y1 - y2)  # Return Manhattan distance
+    # return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)  # Return Euclidean distance
 
 
 def reconstruct_path(came_from, current):
@@ -74,11 +77,11 @@ def reconstruct_path(came_from, current):
 # A* algorithm
 def algorithm(grid, start, end):
     # Initialize open set, g score, f score, and count
-    OPEN_SET.queue.clear()
+    open_set = []
     G_SCORE.clear()
     F_SCORE.clear()
     count = 0
-    OPEN_SET.put((0, count, start))  # Add start node to open set
+    heapq.heappush(open_set, (0, count, start))  # Add start node to open set
     came_from = {}  # Keeps track of where a node came from
 
     for row in grid:
@@ -92,8 +95,8 @@ def algorithm(grid, start, end):
     open_set_hash = {start}  # Keep track of items in PriorityQueue
     visited = []  # List of visited nodes
 
-    while not OPEN_SET.empty():
-        current = OPEN_SET.get()[2]  # Get current node
+    while open_set:
+        current = heapq.heappop(open_set)[2]  # Get current node
         open_set_hash.remove(current)  # Remove current node from open set
 
         if current == end:
@@ -110,7 +113,7 @@ def algorithm(grid, start, end):
                 F_SCORE[neighbor] = temp_g_score + heuristic(neighbor.get_pos(), end.get_pos())  # Update f score
                 if neighbor not in open_set_hash:
                     count += 1
-                    OPEN_SET.put((F_SCORE[neighbor], count, neighbor))  # Add neighbor to open set
+                    heapq.heappush(open_set, (F_SCORE[neighbor], count, neighbor))  # Add neighbor to open set
                     open_set_hash.add(neighbor)  # Add neighbor to open set hash
                     neighbor.set_node_state(State.OPEN)  # Make neighbor open
                     visited.append(neighbor)  # Add neighbor to visited nodes

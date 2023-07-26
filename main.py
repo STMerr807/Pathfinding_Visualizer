@@ -58,7 +58,8 @@ def draw(w_size, grid, rows, w_width):
     w_size.fill(WHITE)  # Fill window with white
     for row in grid:
         for node in row:
-            pygame.draw.rect(w_size, colors[node.state.name.lower()], ((node.row * TILE_SIZE), (node.col * TILE_SIZE), TILE_SIZE, TILE_SIZE))  # Draw node
+            pygame.draw.rect(w_size, colors[node.state.name.lower()],
+                             ((node.row * TILE_SIZE), (node.col * TILE_SIZE), TILE_SIZE, TILE_SIZE))  # Draw node
     draw_grid(w_size, rows, w_width)  # Draw grid lines
     pygame.display.update()  # Update display
 
@@ -78,7 +79,6 @@ def main(w_size=WIN, w_width=WIDTH, tile_size=TILE_SIZE):
     total_rows = w_width // tile_size  # Number of rows
     grid = make_grid(total_rows)  # Create grid
     start = None  # Start node
-    start_save = None  # Save location of start node
     end = None  # End node
     run = True  # Run flag
 
@@ -96,7 +96,6 @@ def main(w_size=WIN, w_width=WIDTH, tile_size=TILE_SIZE):
                     node = grid[row][col]  # Index the node
                     if not start and node.get_node_state() != 'end':  # If start node not set and node is not end node
                         start = node  # Set start node
-                        start_save = start  # Save location of the start node
                         start.set_node_state(pathfinding.State.START)  # Make start node
                     elif not end and node.get_node_state() != 'start':  # If end node not set and node is not start node
                         end = node  # Set end node
@@ -128,15 +127,16 @@ def main(w_size=WIN, w_width=WIDTH, tile_size=TILE_SIZE):
                     and uncomment the three lines after them
                     """
                     visited = pathfinding.algorithm(grid, start, end)  # Run algorithm
-                    for node in visited:
-                        draw(w_size, grid, total_rows, w_width)  # Draw display window
+                    skip_num = 100  # Number of nodes to skip
+                    for i, node in enumerate(visited):
+                        if i % skip_num == 0:  # Draw display window every N nodes
+                            draw(w_size, grid, total_rows, w_width)  # Draw display window
 
                     # for node in algorithm(grid, start, end):  # Iterate over nodes from algorithm
                     #     draw(win, grid, rows, width)  # Draw display window
                     #     pygame.time.delay(5)  # Delay to control visualization speed
 
                 if event.key == pygame.K_c:  # On c key press
-                    start = start_save  # Reset start node
                     start.set_node_state(pathfinding.State.START)  # Make start node
                     reset_flag = False
                     for row in grid:
